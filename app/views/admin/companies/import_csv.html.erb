@@ -1,0 +1,8 @@
+<h3>Upload a CSV File to Import Contacts</h3>
+
+<%= form_tag process_csv_admin_companies_path, multipart: true do %>
+  <%= hidden_field_tag :company_id, params[:id] %>
+  <%= file_field_tag :file, required: true %>
+  <br><br>
+  <%= submit_tag "Upload", class: "button" %>
+<% end %>

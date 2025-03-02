@@ -1,9 +1,10 @@
-class Location < ApplicationRecord
+# frozen_string_literal: true
 
+class Location < ApplicationRecord
   validates :name, presence: true
   validates :location_email, format: { with: Constants::EMAIL_REGEX }
   validates :active, presence: true
-  
+
   has_one :address, as: :resource
   belongs_to :company
 

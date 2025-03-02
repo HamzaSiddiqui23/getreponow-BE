@@ -1,5 +1,6 @@
-ActiveAdmin.register Location do
+# frozen_string_literal: true
 
+ActiveAdmin.register Location do
   show do
     attributes_table do
       row :name
@@ -19,5 +20,4 @@ ActiveAdmin.register Location do
       end
     end
   end
-
 end

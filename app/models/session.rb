@@ -1,12 +1,13 @@
-class Session < ApplicationRecord
+# frozen_string_literal: true
 
+class Session < ApplicationRecord
   belongs_to :resource, polymorphic: true
 
   before_validation :set_token_and_expiration, on: :create
 
   scope :active, -> { where('expires_at > ?', Time.current) }
   scope :user_session, ->(user) { where(resource: user) }
-  
+
   def user
     resource if resource.is_a?(User)
   end

@@ -1,7 +1,8 @@
-class Company < ApplicationRecord
+# frozen_string_literal: true
 
+class Company < ApplicationRecord
   validates :name, presence: true
-  
+
   has_one :address, as: :resource
   has_many :users
   has_many :locations

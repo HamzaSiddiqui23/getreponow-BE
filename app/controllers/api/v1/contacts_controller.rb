@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 module Api
@@ -10,17 +12,15 @@ module Api
         render json: contacts
       end
 
-
       def show
         contact = current_company.contacts.find(params[:id])
 
         render json: contact
-
       rescue ActiveRecord::RecordNotFound
         render json: { error: 'Contact not found' }, status: :not_found
       end
 
-        # POST /users
+      # POST /users
       def create
         contact = current_company.contacts.new(contact_params)
 
@@ -31,7 +31,7 @@ module Api
         end
       end
 
-        # PATCH/PUT /users/:id
+      # PATCH/PUT /users/:id
       def update
         contact = current_company.contacts.find(params[:id])
 
@@ -49,28 +49,28 @@ module Api
         if params[:file].present?
           file = params[:file]
           csv_text = file.read
-    
+
           contacts = []
           CSV.parse(csv_text, headers: true) do |row|
             contacts << {
-              first_name: row["first_name"],
-              last_name: row["last_name"],
-              email: row["email"],
-              phone: row["phone"]
+              first_name: row['first_name'],
+              last_name: row['last_name'],
+              email: row['email'],
+              phone: row['phone']
             }
           end
-    
+
           current_company.contacts.insert_all(contacts) # Bulk insert for efficiency
-    
-          render json: { message: "Contacts imported successfully", count: contacts.size }, status: :created
+
+          render json: { message: 'Contacts imported successfully', count: contacts.size }, status: :created
         else
-          render json: { error: "No file uploaded" }, status: :unprocessable_entity
+          render json: { error: 'No file uploaded' }, status: :unprocessable_entity
         end
       end
 
       # Strong parameters to ensure only permitted fields are passed
       def contact_params
-        params.require(:contact).permit(:first_name, :last_name, :email, :phone)  # Add any other fields as needed
+        params.require(:contact).permit(:first_name, :last_name, :email, :phone) # Add any other fields as needed
       end
     end
   end

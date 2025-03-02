@@ -1,5 +1,6 @@
-class Address < ApplicationRecord
+# frozen_string_literal: true
 
+class Address < ApplicationRecord
   belongs_to :resource, polymorphic: true
 
   def complete?

@@ -149,6 +149,10 @@ GEM
     has_scope (0.8.2)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
+    httparty (0.22.0)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.1.0)
@@ -203,6 +207,8 @@ GEM
     mini_mime (1.1.5)
     minitest (5.25.4)
     msgpack (1.7.5)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
     mutex_m (0.3.0)
     net-imap (0.5.5)
       date
@@ -330,7 +336,6 @@ GEM
       rubocop (~> 1.61)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    ruby_http_client (3.5.5)
     rubyzip (2.4.1)
     sassc (2.4.0)
       ffi (~> 1.9)
@@ -347,8 +352,6 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sendgrid-ruby (6.7.0)
-      ruby_http_client (~> 3.4)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -400,6 +403,7 @@ DEPENDENCIES
   debug
   devise
   dotenv-rails
+  httparty
   importmap-rails
   jbuilder
   jwt
@@ -414,7 +418,6 @@ DEPENDENCIES
   rubocop-rspec
   sassc-rails
   selenium-webdriver
-  sendgrid-ruby
   sprockets-rails
   stimulus-rails
   turbo-rails

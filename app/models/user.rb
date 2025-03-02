@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   include Phonify
 
-  devise :database_authenticatable, 
+  devise :database_authenticatable,
          :recoverable, :rememberable, :validatable
 
   belongs_to :company
@@ -13,7 +15,7 @@ class User < ApplicationRecord
   validates :email, format: { with: Constants::EMAIL_REGEX }
   validates :encrypted_password, presence: true
 
-  before_validation :set_default_password_and_set_primary, on: :create, if: -> (i) { i.password.blank? }
+  before_validation :set_default_password_and_set_primary, on: :create, if: ->(i) { i.password.blank? }
   before_save :default_primary, if: ->(i) { i.company.present? }
   before_save :set_primary, if: ->(i) { i.company_id.present? && primary_changed? && i.primary? }
 
@@ -30,10 +32,11 @@ class User < ApplicationRecord
   end
 
   def send_welcome_email
-    dynamic_data = {
-      name: ,
-    }
-    UserMailer.send_dynamic_email(self, Constants::WELCOME_EMAIL_TEMPLATE, dynamic_data).deliver_now
+    UserMailer.send_welcome_email(self).deliver_now
+  end
+
+  def send_test_sms
+    SendSmsJob.perform_later(phone, "Welcome to GetRepo, #{name}!")
   end
 
   def set_primary

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class LocationsController < BaseController
@@ -7,12 +9,12 @@ module Api
         locations = current_company.locations.includes(:address).all
         render json: locations, include: :address
       end
-    
+
       def show
         location = current_company.locations.find(params[:id])
         render json: location, include: :address
       end
-    
+
       def create
         location = current_company.locations.new(location_params)
         if location.save
@@ -32,11 +34,12 @@ module Api
       rescue ActiveRecord::RecordNotFound
         render json: { error: 'Location not found' }, status: :not_found
       end
-    
+
       private
-    
+
       def location_params
-        params.require(:location).permit(:name, :active, :location_email, :google_review_url, address_attributes: [:street, :city, :state, :zip, :country, :suite])
+        params.require(:location).permit(:name, :active, :location_email, :google_review_url,
+                                         address_attributes: %i[street city state zip country suite])
       end
     end
   end

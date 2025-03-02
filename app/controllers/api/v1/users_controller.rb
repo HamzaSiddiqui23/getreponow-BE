@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class UsersController < BaseController
@@ -8,17 +10,15 @@ module Api
         render json: users
       end
 
-
       def show
         user = current_company.users.find(params[:id])
 
         render json: user
-
       rescue ActiveRecord::RecordNotFound
         render json: { error: 'User not found' }, status: :not_found
       end
 
-        # POST /users
+      # POST /users
       def create
         user = current_company.users.new(user_params)
 
@@ -29,7 +29,7 @@ module Api
         end
       end
 
-        # PATCH/PUT /users/:id
+      # PATCH/PUT /users/:id
       def update
         user = current_company.users.find(params[:id])
 
@@ -42,10 +42,9 @@ module Api
         render json: { error: 'User not found' }, status: :not_found
       end
 
-
       # Strong parameters to ensure only permitted fields are passed
       def user_params
-        params.require(:user).permit(:first_name, :last_name, :email, :phone, :password, :primary)  # Add any other fields as needed
+        params.require(:user).permit(:first_name, :last_name, :email, :phone, :password, :primary) # Add any other fields as needed
       end
     end
   end

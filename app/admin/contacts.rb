@@ -1,5 +1,6 @@
-ActiveAdmin.register Contact do
+# frozen_string_literal: true
 
+ActiveAdmin.register Contact do
   permit_params :company_id, :first_name, :last_name, :email, :phone
 
   filter :company
@@ -14,7 +15,7 @@ ActiveAdmin.register Contact do
     column :company
     column :email
     actions
-  end 
+  end
 
   form do |f|
     f.inputs do
@@ -28,5 +29,4 @@ ActiveAdmin.register Contact do
 
     f.actions
   end
-
 end

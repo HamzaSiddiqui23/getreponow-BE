@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Company do
-  permit_params :name, :industry, :logo, address_attributes: [:id, :street, :city, :suite, :state, :zip, :country, :_destroy], locations_attributes: [:id, :name, :location_email, :active, :_destroy, address_attributes: [:id, :street, :city, :suite, :state, :zip, :country, :_destroy]]
+  permit_params :name, :industry, :logo,
+                address_attributes: %i[id street city suite state zip country _destroy], locations_attributes: [:id, :name, :location_email, :active, :_destroy, { address_attributes: %i[id street city suite state zip country _destroy] }]
 
   filter :name
 
@@ -13,7 +16,7 @@ ActiveAdmin.register Company do
 
   collection_action :process_csv, method: :post do
     company = Company.find(params[:company_id])
-    
+
     if params[:file].present?
       require 'csv'
 
@@ -21,9 +24,9 @@ ActiveAdmin.register Company do
         company.contacts.create(row.to_h)
       end
 
-      redirect_to admin_company_path(company), notice: "Contacts imported successfully!"
+      redirect_to admin_company_path(company), notice: 'Contacts imported successfully!'
     else
-      redirect_to import_contacts_admin_company_path(company), alert: "Please upload a valid CSV file."
+      redirect_to import_contacts_admin_company_path(company), alert: 'Please upload a valid CSV file.'
     end
   end
 
@@ -59,7 +62,7 @@ ActiveAdmin.register Company do
             column :country
           end
         end
-        active_admin_comments 
+        active_admin_comments
       end
 
       column do
@@ -111,7 +114,7 @@ ActiveAdmin.register Company do
         a.input :city
         a.input :state
         a.input :zip
-        a.input :country, as: :select, collection: ['US', 'Canada']
+        a.input :country, as: :select, collection: %w[US Canada]
       end
 
       f.has_many :locations, heading: 'Location', allow_destroy: true, new_record: true do |l|
@@ -126,7 +129,7 @@ ActiveAdmin.register Company do
           a.input :city
           a.input :state
           a.input :zip
-          a.input :country, as: :select, collection: ['US', 'Canada']
+          a.input :country, as: :select, collection: %w[US Canada]
         end
       end
     end

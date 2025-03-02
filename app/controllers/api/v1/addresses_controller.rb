@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class AddressesController < BaseController
@@ -18,9 +20,9 @@ module Api
       rescue ActiveRecord::RecordNotFound
         render json: { error: 'Address not found' }, status: :not_found
       end
-    
+
       private
-    
+
       def address_params
         params.require(:address).permit(:street, :city, :state, :zip, :country, :suite)
       end

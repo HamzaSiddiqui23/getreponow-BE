@@ -29,4 +29,38 @@ ActiveAdmin.register User do
 
     f.actions
   end
+
+  show do
+    attributes_table do
+      row :first_name
+      row :last_name
+      row :email
+      row :company
+      row :primary
+      row :created_at
+      row :updated_at
+    end
+    panel 'Emails' do
+      paginated_collection(
+        resource.email_recipients.order(created_at: :desc).page(params[:page]).per(10), download_links: false
+      ) do
+        table_for collection do
+          column :id
+          column :email do |c|
+            Constants::EMAIL_TEMPLATES.key(c.email.email_type)&.to_s&.humanize
+          end
+          column :created_at
+
+          column 'Email Events' do |r|
+            if r.email_events.any?
+              table_for r.email_events.order(timestamp: :asc) do
+                column :status
+                column :timestamp
+              end
+            end
+          end
+        end
+      end
+    end
+  end
 end

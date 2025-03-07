@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module JwtToken
-  SECRET_KEY = ENV['JWT_SECRET']
+  SECRET_KEY = Rails.application.credentials[:jwt_secret]
 
   def self.encode(payload)
     JWT.encode(payload, SECRET_KEY)

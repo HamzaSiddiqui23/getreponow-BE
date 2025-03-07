@@ -72,7 +72,7 @@ Rails.application.configure do
     port: 587,
     domain: 'getreponow.com', # Replace with your domain
     user_name: 'apikey', # This is always 'apikey', not your actual username
-    password: ENV['SENDGRID_API_KEY'], # Your SendGrid API key
+    password: Rails.application.credentials.dig(:sendgrid, :api_key), # Your SendGrid API key
     authentication: :plain,
     enable_starttls_auto: true
   }

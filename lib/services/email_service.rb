@@ -8,13 +8,6 @@ module Services
 
     SENDER_ADDRESS = 'support@getreponow.com'
 
-    def initialize
-      @headers = {
-        'Authorization' => "App #{ENV['INFOBIP_API_KEY']}",
-        'Accept' => 'application/json'
-      }
-    end
-
     def send_dynamic_email(user:, template_id:, subject:, resource:)
       return if BlockedEmail.where(email: user.email).present?
 
@@ -38,7 +31,7 @@ module Services
 
       mail.template_id = template_id
 
-      sg = SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY'])
+      sg = SendGrid::API.new(api_key: Rails.application.credentials.dig(:sendgrid, :api_key))
       response = sg.client.mail._('send').post(request_body: mail.to_json)
 
       Rails.logger.info("SendGrid Response: #{response.status_code} - #{response.body}")

@@ -44,7 +44,7 @@ Rails.application.configure do
     authentication: 'plain',
     enable_starttls_auto: true,
     user_name: 'apikey',
-    password: ENV['SENDGRID_API_KEY']
+    password: Rails.application.credentials.dig(:sendgrid, :api_key)
   }
 
   # Store uploaded files on the local file system (see config/storage.yml for options).

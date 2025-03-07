@@ -10,6 +10,7 @@ class User < ApplicationRecord
 
   belongs_to :company
   has_many :sessions, as: :resource
+  has_many :email_recipients, as: :recipient
 
   validates :first_name, :last_name, :email, presence: true
   validates :email, format: { with: Constants::EMAIL_REGEX }

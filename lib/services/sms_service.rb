@@ -9,7 +9,7 @@ module Services
 
     def initialize
       @headers = {
-        'Authorization' => "App #{ENV['INFOBIP_API_KEY']}",
+        'Authorization' => "App #{Rails.application.credentials.dig(:infobip, :api_key)}",
         'Content-Type' => 'application/json',
         'Accept' => 'application/json'
       }

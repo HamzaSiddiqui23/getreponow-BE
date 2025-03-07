@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_250_209_113_325) do
+ActiveRecord::Schema[7.1].define(version: 20_250_305_180_223) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -87,6 +87,14 @@ ActiveRecord::Schema[7.1].define(version: 20_250_209_113_325) do
     t.index ['reset_password_token'], name: 'index_admin_users_on_reset_password_token', unique: true
   end
 
+  create_table 'blocked_emails', force: :cascade do |t|
+    t.string 'email', null: false
+    t.string 'status', null: false
+    t.string 'event', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+  end
+
   create_table 'companies', force: :cascade do |t|
     t.string 'name'
     t.string 'industry'
@@ -107,6 +115,35 @@ ActiveRecord::Schema[7.1].define(version: 20_250_209_113_325) do
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
     t.index ['company_id'], name: 'index_contacts_on_company_id'
+  end
+
+  create_table 'email_events', force: :cascade do |t|
+    t.bigint 'email_recipient_id', null: false
+    t.string 'status', null: false
+    t.datetime 'timestamp', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['email_recipient_id'], name: 'index_email_events_on_email_recipient_id'
+  end
+
+  create_table 'email_recipients', force: :cascade do |t|
+    t.string 'recipient_type', null: false
+    t.bigint 'recipient_id', null: false
+    t.string 'recipient_email', null: false
+    t.bigint 'email_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['email_id'], name: 'index_email_recipients_on_email_id'
+    t.index %w[recipient_type recipient_id], name: 'index_email_recipients_on_recipient'
+  end
+
+  create_table 'emails', force: :cascade do |t|
+    t.string 'resource_type'
+    t.bigint 'resource_id'
+    t.string 'email_type'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[resource_type resource_id], name: 'index_emails_on_resource'
   end
 
   create_table 'locations', force: :cascade do |t|

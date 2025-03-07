@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  post '/email_callbacks', to: 'sendgrid#create'
+
   namespace :api do
     namespace :v1 do
       post '/login', to: 'authentication#login'

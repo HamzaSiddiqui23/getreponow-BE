@@ -38,13 +38,13 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    address: 'smtp-api.infobip.com',
+    address: 'smtp.sendgrid.net',
     port: 587,
     domain: 'getreponow.com',
-    user_name: 'GetRepoLLC',
-    password: ENV['INFOBIP_PASSWORD'],
-    authentication: :login,
-    enable_starttls_auto: true
+    authentication: 'plain',
+    enable_starttls_auto: true,
+    user_name: 'apikey',
+    password: ENV['SENDGRID_API_KEY']
   }
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
@@ -78,6 +78,8 @@ Rails.application.configure do
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
+
+  config.hosts = ['localhost', '5b25-2407-d000-b-bc45-59c3-a0fa-cddf-e0a4.ngrok-free.app']
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true

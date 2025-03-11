@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_250_305_180_223) do
+ActiveRecord::Schema[7.1].define(version: 20_250_204_162_633) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -87,14 +87,6 @@ ActiveRecord::Schema[7.1].define(version: 20_250_305_180_223) do
     t.index ['reset_password_token'], name: 'index_admin_users_on_reset_password_token', unique: true
   end
 
-  create_table 'blocked_emails', force: :cascade do |t|
-    t.string 'email', null: false
-    t.string 'status', null: false
-    t.string 'event', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-  end
-
   create_table 'companies', force: :cascade do |t|
     t.string 'name'
     t.string 'industry'
@@ -117,35 +109,6 @@ ActiveRecord::Schema[7.1].define(version: 20_250_305_180_223) do
     t.index ['company_id'], name: 'index_contacts_on_company_id'
   end
 
-  create_table 'email_events', force: :cascade do |t|
-    t.bigint 'email_recipient_id', null: false
-    t.string 'status', null: false
-    t.datetime 'timestamp', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['email_recipient_id'], name: 'index_email_events_on_email_recipient_id'
-  end
-
-  create_table 'email_recipients', force: :cascade do |t|
-    t.string 'recipient_type', null: false
-    t.bigint 'recipient_id', null: false
-    t.string 'recipient_email', null: false
-    t.bigint 'email_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['email_id'], name: 'index_email_recipients_on_email_id'
-    t.index %w[recipient_type recipient_id], name: 'index_email_recipients_on_recipient'
-  end
-
-  create_table 'emails', force: :cascade do |t|
-    t.string 'resource_type'
-    t.bigint 'resource_id'
-    t.string 'email_type'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index %w[resource_type resource_id], name: 'index_emails_on_resource'
-  end
-
   create_table 'locations', force: :cascade do |t|
     t.string 'name'
     t.boolean 'active'
@@ -157,17 +120,6 @@ ActiveRecord::Schema[7.1].define(version: 20_250_305_180_223) do
     t.index ['company_id'], name: 'index_locations_on_company_id'
   end
 
-  create_table 'qr_surveys', force: :cascade do |t|
-    t.bigint 'location_id'
-    t.string 'service'
-    t.boolean 'show_logo'
-    t.string 'text_above'
-    t.string 'text_below'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['location_id'], name: 'index_qr_surveys_on_location_id'
-  end
-
   create_table 'sessions', force: :cascade do |t|
     t.string 'resource_type', null: false
     t.bigint 'resource_id', null: false
@@ -177,55 +129,6 @@ ActiveRecord::Schema[7.1].define(version: 20_250_305_180_223) do
     t.datetime 'updated_at', null: false
     t.index %w[resource_type resource_id], name: 'index_sessions_on_resource'
     t.index ['token'], name: 'index_sessions_on_token', unique: true
-  end
-
-  create_table 'survey_recipients', force: :cascade do |t|
-    t.bigint 'survey_id'
-    t.bigint 'contact_id'
-    t.string 'status'
-    t.datetime 'sent_at', precision: nil
-    t.datetime 'opened_at', precision: nil
-    t.datetime 'clicked_at', precision: nil
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['contact_id'], name: 'index_survey_recipients_on_contact_id'
-    t.index ['survey_id'], name: 'index_survey_recipients_on_survey_id'
-  end
-
-  create_table 'survey_responses', force: :cascade do |t|
-    t.bigint 'survey_recipient_id'
-    t.string 'status'
-    t.integer 'rating'
-    t.string 'comments'
-    t.boolean 'qr_response'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['survey_recipient_id'], name: 'index_survey_responses_on_survey_recipient_id'
-  end
-
-  create_table 'survey_templates', force: :cascade do |t|
-    t.bigint 'survey_id'
-    t.integer 'subject'
-    t.string 'header'
-    t.string 'message', null: false
-    t.string 'footer'
-    t.string 'type', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['survey_id'], name: 'index_survey_templates_on_survey_id'
-  end
-
-  create_table 'surveys', force: :cascade do |t|
-    t.bigint 'location_id'
-    t.integer 'threshold', default: 3, null: false
-    t.string 'form_message'
-    t.string 'good_message'
-    t.string 'negative_message'
-    t.string 'enabled', default: 'f'
-    t.string 'white_label', default: 'f'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['location_id'], name: 'index_surveys_on_location_id'
   end
 
   create_table 'users', force: :cascade do |t|

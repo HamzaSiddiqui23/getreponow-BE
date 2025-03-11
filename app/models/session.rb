@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: sessions
+#
+#  id            :bigint           not null, primary key
+#  resource_type :string           not null
+#  resource_id   :bigint           not null
+#  token         :string           not null
+#  expires_at    :datetime         not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
 class Session < ApplicationRecord
   belongs_to :resource, polymorphic: true
 
